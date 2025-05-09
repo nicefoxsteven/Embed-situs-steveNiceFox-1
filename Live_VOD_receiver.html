@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stream Player</title>
+    <title>Live_VOD_receiver.html</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   </head>
   <body style="background-color: transparent; margin: 0; padding: 0">
     <!-- Video Player -->
-    <video id="video" controls style="width: 100%; height: auto;"></video>
+    <video id="video" controls muted style="width: 100%; height: auto;"></video>
 
     <script>
       // ID Video Element
@@ -48,6 +48,11 @@
             video.play(); // Mulai video jika masih ter-pause
           }
         }, 2000); // Sesuaikan delay (2 detik) jika perlu
+      });
+
+      // Jika video telah dimulai, izinkan untuk mengaktifkan suara
+      video.addEventListener('play', function() {
+        video.muted = false; // Matikan mute setelah dimulai
       });
     </script>
   </body>
