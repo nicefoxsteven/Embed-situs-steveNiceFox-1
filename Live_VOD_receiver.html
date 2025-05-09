@@ -1,42 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Live Stream (Low Latency)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/flv.js@1.6.2/dist/flv.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    video {
-      width: 100%;
-      max-width: 960px;
-      height: auto;
-    }
-  </style>
-</head>
-<body>
-  <video id="flvPlayer" controls autoplay muted></video>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live_VOD_receiver.html</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  </head>
+  <body>
+    <video id="video" controls style="width: 100%; height: auto;"></video>
 
-  <script>
-    if (flvjs.isSupported()) {
-      var videoElement = document.getElementById('flvPlayer');
-      var flvPlayer = flvjs.createPlayer({
-        type: 'flv',
-        url: 'https://idpd330-n2004xr.tail47ced6.ts.net/show/show1.m3u8' // Ganti dengan endpoint HTTPS kamu
-      });
-      flvPlayer.attachMediaElement(videoElement);
-      flvPlayer.load();
-      flvPlayer.play();
-    } else {
-      alert('FLV.js is not supported on this browser.');
-    }
-  </script>
-</body>
+    <script>
+      var video = document.getElementById('video');
+      var videoSrc = 'https://idpd330-n2004xr.tail47ced6.ts.net/show/show1.m3u8'; // Ganti dengan URL M3U8 Anda
+
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+      }
+      // Untuk Safari, yang sudah mendukung HLS secara native
+      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoSrc;
+      }
+    </script>
+  </body>
 </html>
