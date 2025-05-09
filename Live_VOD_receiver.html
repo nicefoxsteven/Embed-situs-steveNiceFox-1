@@ -1,63 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live_VOD_receiver.html</title>
+  <meta charset="UTF-8">
+  <title>Live Stream (Low Latency)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/flv.js@1.6.2/dist/flv.min.js"></script>
   <style>
     body {
       margin: 0;
-      background-color: #111;
-      color: white;
-      font-family: sans-serif;
+      background: #000;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
     }
-
-    .video-container {
-      position: relative;
-      width: 100%;
-      max-width: 960px;
-      aspect-ratio: 16 / 9;
-      box-shadow: 0 0 20px rgba(255, 136, 0, 0.3);
-    }
-
     video {
       width: 100%;
-      height: 100%;
-      background-color: black;
-      border-radius: 12px;
+      max-width: 960px;
+      height: auto;
     }
   </style>
 </head>
 <body>
-  <div class="video-container">
-    <video id="video" controls autoplay muted playsinline></video>
-  </div>
+  <video id="flvPlayer" controls autoplay muted></video>
 
-  <!-- hls.js from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
-    const video = document.getElementById('video');
-    const videoSrc = "https://idpd330-n2004xr.tail47ced6.ts.net/show/show1.m3u8"; // Ganti dengan URL M3U8 milikmu
-
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        video.play();
+    if (flvjs.isSupported()) {
+      var videoElement = document.getElementById('flvPlayer');
+      var flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        url: 'https://idpd330-n2004xr.tail47ced6.ts.net/show/show1.flv' // Ganti dengan endpoint HTTPS kamu
       });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-      video.addEventListener('loadedmetadata', function () {
-        video.play();
-      });
+      flvPlayer.attachMediaElement(videoElement);
+      flvPlayer.load();
+      flvPlayer.play();
     } else {
-      alert("Browser ini tidak mendukung HLS streaming.");
+      alert('FLV.js is not supported on this browser.');
     }
   </script>
 </body>
