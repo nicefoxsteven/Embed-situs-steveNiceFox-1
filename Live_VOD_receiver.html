@@ -36,6 +36,11 @@
         video.src = videoSrc; // Gunakan langsung sumber HLS
       }
 
+      // Auto Play video secara otomatis
+      video.play().catch(function(error) {
+        console.error('Error saat memulai video: ', error);
+      });
+
       video.addEventListener('pause', function() {
         // Cek jika video ter-pause lebih dari 2 detik
         setTimeout(function() {
