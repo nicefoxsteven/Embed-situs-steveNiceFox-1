@@ -36,11 +36,6 @@
         video.src = videoSrc; // Gunakan langsung sumber HLS
       }
 
-      // Auto Play video secara otomatis
-      video.play().catch(function(error) {
-        console.error('Error saat memulai video: ', error);
-      });
-
       video.addEventListener('pause', function() {
         // Cek jika video ter-pause lebih dari 2 detik
         setTimeout(function() {
@@ -48,11 +43,6 @@
             video.play(); // Mulai video jika masih ter-pause
           }
         }, 2000); // Sesuaikan delay (2 detik) jika perlu
-      });
-
-      // Jika video telah dimulai, izinkan untuk mengaktifkan suara
-      video.addEventListener('play', function() {
-        video.muted = false; // Matikan mute setelah dimulai
       });
     </script>
   </body>
