@@ -35,15 +35,6 @@
       else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = videoSrc; // Gunakan langsung sumber HLS
       }
-
-      video.addEventListener('pause', function() {
-        // Cek jika video ter-pause lebih dari 2 detik
-        setTimeout(function() {
-          if (video.paused) {
-            video.play(); // Mulai video jika masih ter-pause
-          }
-        }, 2000); // Sesuaikan delay (2 detik) jika perlu
-      });
     </script>
   </body>
 </html>
