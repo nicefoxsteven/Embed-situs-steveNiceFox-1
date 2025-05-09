@@ -9,14 +9,36 @@
   <body>
     <video id="video" controls style="width: 100%; height: auto;"></video>
 
-    <script>
+        <script>
       var video = document.getElementById('video');
       var videoSrc = 'https://idpd330-n2004xr.tail47ced6.ts.net/show/show1.m3u8'; // Ganti dengan URL M3U8 Anda
 
       if (Hls.isSupported()) {
-        var hls = new Hls();
+        var hls = new Hls({
+          startLevel: -1, // Mulai dari kualitas tertinggi yang tersedia
+          autoStartLoad: true, // Mulai memuat video secara otomatis
+          levelLoadingTimeout: 10000, // Waktu timeout level loading (10 detik)
+          fragLoadingTimeOut: 5000, // Waktu timeout untuk memuat fragmen (5 detik)
+          maxBufferLength: 30, // Panjang maksimum buffer (detik)
+          maxMaxBufferLength: 60, // Buffer maksimum yang lebih besar (detik)
+          maxBufferSize: 60 * 1000 * 1000, // Maksimal buffer dalam ukuran byte (60 MB)
+          maxFragLookUpTolerance: 0.25, // Toleransi saat mencari fragmen untuk mengurangi pemutaran terhenti
+          enableWorker: true, // Mengaktifkan Web Worker untuk meningkatkan kinerja
+          enableSoftwareAES: true, // Memungkinkan dekripsi video di sisi klien
+        });
+
         hls.loadSource(videoSrc);
         hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          console.log("Manifest parsed!");
+        });
+        
+        hls.on(Hls.Events.ERROR, function (event, data) {
+          if (data.fatal) {
+            console.error("HLS Error: " + data.type + " - " + data.details);
+          }
+        });
       }
       // Untuk Safari, yang sudah mendukung HLS secara native
       else if (video.canPlayType('application/vnd.apple.mpegurl')) {
